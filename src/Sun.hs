@@ -1,4 +1,6 @@
-module Sun where
+module Sun (
+  Sun (..), 
+  sun)where
 
 import Data.Fixed
 import Graphics.Gloss
@@ -17,10 +19,10 @@ data Sun = Sun {
 sun :: Sun -> Picture
 sun Sun {colorStart=c1, colorEnd=c2, coords=c, period=p, size=sz, steps=st,
   time=t} =
-    pictures . reverse $
+    uncurry translate c . pictures $
     --map (color cl . rotate dg . sunSolid . getSize . fromIntegral) [1..st]
     [sunPart x
-      | x <- [1..st]]
+      | x <- [st,st-1..1]]
     -- map (color cl . sunSolid . getSize . fromIntegral) [1..st]
   where
     sunPart :: Int -> Picture
