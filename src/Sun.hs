@@ -10,18 +10,18 @@ import Graphics.Gloss
 import Utils
 
 data Sun = Sun {
-  elemColorStart :: Color,
-  elemColorEnd :: Color,
-  elemCoords :: Coords,
-  elemPeriod :: Float,
-  elemSize :: Float,
-  elemSteps :: Step,
-  elemTime :: Float
+  sunColorStart :: Color,
+  sunColorEnd :: Color,
+  sunCoords :: Coords,
+  sunPeriod :: Float,
+  sunSize :: Float,
+  sunSteps :: Step,
+  sunTime :: Float
 }
 
 sun :: Sun -> Picture
-sun Sun {elemColorStart=c1, elemColorEnd=c2, elemCoords=c,
-         elemPeriod=p, elemSize=sz, elemSteps=st, elemTime=t} =
+sun Sun {sunColorStart=c1, sunColorEnd=c2, sunCoords=c,
+         sunPeriod=p, sunSize=sz, sunSteps=st, sunTime=t} =
     uncurry translate c . pictures .map sunPart $ [st,st-1..1]
   where
     sunPart :: Int -> Picture
@@ -60,11 +60,11 @@ sunSolid side = pictures [
 
 stdSun :: Sun
 stdSun = Sun {
-  elemColorStart = red,
-  elemColorEnd = yellow,
-  elemCoords = (-200, 300),
-  elemPeriod = 3,
-  elemSize = 100,
-  elemSteps = 15,
-  elemTime = 0
+  sunColorStart = red,
+  sunColorEnd = yellow,
+  sunCoords = (-200, 300),
+  sunPeriod = 3,
+  sunSize = 100,
+  sunSteps = 15,
+  sunTime = 0
 }
