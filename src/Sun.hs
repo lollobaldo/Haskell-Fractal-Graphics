@@ -1,4 +1,5 @@
 module Sun (
+  Sun(..),
   sun,
   stdSun) where
 
@@ -8,7 +9,17 @@ import Graphics.Gloss
 -- import Scene
 import Utils
 
-sun :: Element -> Picture
+data Sun = Sun {
+  elemColorStart :: Color,
+  elemColorEnd :: Color,
+  elemCoords :: Coords,
+  elemPeriod :: Float,
+  elemSize :: Float,
+  elemSteps :: Step,
+  elemTime :: Float
+}
+
+sun :: Sun -> Picture
 sun Sun {elemColorStart=c1, elemColorEnd=c2, elemCoords=c,
          elemPeriod=p, elemSize=sz, elemSteps=st, elemTime=t} =
     uncurry translate c . pictures .map sunPart $ [st,st-1..1]
@@ -19,13 +30,13 @@ sun Sun {elemColorStart=c1, elemColorEnd=c2, elemCoords=c,
               . sunSolid
               . getSize
               . fromIntegral) i
-    cl s = getColor s st c2 c1
+    -- cl s = getColor s st c2 c1
     dg = (30*) . fromIntegral
     getSize = (/st') . (*sz)
     step = round $ (t `mod'` p) * 2*st' / p
     st' = fromIntegral st
     colors = sunColors st c1 c2
-sun _ = error "Cannot initialise as Sun"
+-- sun _ = error "Cannot initialise as Sun"
 
 sunColors :: Step -> Color -> Color -> [Color]
 sunColors st c2 c1 = cycle $ ls ++ (tail . reverse) ls
@@ -47,6 +58,7 @@ sunSolid side = pictures [
     i = t / 2
     h = side * 0.86602540378
 
+stdSun :: Sun
 stdSun = Sun {
   elemColorStart = red,
   elemColorEnd = yellow,

@@ -9,7 +9,8 @@ main = do
   animate window background frame
   where
     frame :: Float -> Picture
-    frame s = sun $ stdSun {elemTime=s}
+    frame s = pictures . map render $ [SunElement stdSun {elemTime=s},
+                                      CloudElement stdCloud]
 
 width, height, offset :: Int
 width = 800
