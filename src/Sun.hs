@@ -1,29 +1,17 @@
 module Sun (
-  Sun (..), 
-  sun)where
+  sun,
+  stdSun) where
 
 import Data.Fixed
 import Graphics.Gloss
+
+-- import Scene
 import Utils
 
-data Sun = Sun {
-  colorStart :: Color,
-  colorEnd :: Color,
-  coords :: Coords,
-  period :: Float,
-  size :: Float,
-  steps :: Step,
-  time :: Float
-}
-
-sun :: Sun -> Picture
-sun Sun {colorStart=c1, colorEnd=c2, coords=c, period=p, size=sz, steps=st,
-  time=t} =
-    uncurry translate c . pictures $
-    --map (color cl . rotate dg . sunSolid . getSize . fromIntegral) [1..st]
-    [sunPart x
-      | x <- [st,st-1..1]]
-    -- map (color cl . sunSolid . getSize . fromIntegral) [1..st]
+sun :: Element -> Picture
+sun Sun {elemColorStart=c1, elemColorEnd=c2, elemCoords=c,
+         elemPeriod=p, elemSize=sz, elemSteps=st, elemTime=t} =
+    uncurry translate c . pictures .map sunPart $ [st,st-1..1]
   where
     sunPart :: Int -> Picture
     sunPart i = (rotate (dg i)
@@ -37,9 +25,10 @@ sun Sun {colorStart=c1, colorEnd=c2, coords=c, period=p, size=sz, steps=st,
     step = round $ (t `mod'` p) * 2*st' / p
     st' = fromIntegral st
     colors = sunColors st c1 c2
+sun _ = error "Cannot initialise as Sun"
 
 sunColors :: Step -> Color -> Color -> [Color]
-sunColors st c2 c1 = cycle $ ls ++ reverse ls
+sunColors st c2 c1 = cycle $ ls ++ (tail . reverse) ls
   where
     ls = [mixColors (100-x) x c1 c2 | let d = 100/fromIntegral st, x <- [0,d..100]]
 
@@ -57,3 +46,13 @@ sunSolid side = pictures [
     t = side * 0.57735026919
     i = t / 2
     h = side * 0.86602540378
+
+stdSun = Sun {
+  elemColorStart = red,
+  elemColorEnd = yellow,
+  elemCoords = (-200, 300),
+  elemPeriod = 3,
+  elemSize = 100,
+  elemSteps = 15,
+  elemTime = 0
+}
