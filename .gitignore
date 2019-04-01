@@ -3,3 +3,4 @@ src/final.old.hs
 *.hi
 *.o
 src/final.old.exe
+try.hs
