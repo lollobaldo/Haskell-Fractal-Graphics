@@ -26,6 +26,6 @@ data Element = SunElement Sun
              | CloudElement Cloud
 
 
-render :: Element -> Picture
-render (CloudElement c) = cloud c
-render (SunElement s) = sun s
+render :: Float -> Element -> Picture
+render t (CloudElement c) = cloud c{cloudTime=t}
+render t (SunElement s) = sun s{sunTime=t}
