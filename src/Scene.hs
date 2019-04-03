@@ -1,31 +1,55 @@
 module Scene (
   Element (..),
-  Sun(..),
+  -- Sun(..),
   -- Kind (..),
   
   render,
-
-  -- Constructor Functions
-  sun,
-
   -- Standard Elements
-  stdCloud,
-  stdSun
+  cloudElem,
+  skyElem,
+  sunElem,
+
+  -- | Element attributes
+  cloudKind,
+  cloudColorMain,
+  cloudCoords,
+  cloudRans,
+  cloudSize',
+  cloudSteps,
+  -- | SKY
+  skyColorMain,
+  skySize,
+  -- | SUN
+  sunColorStart,
+  sunColorEnd,
+  sunCoords,
+  sunPeriod,
+  sunSize,
+  sunSteps
   ) where
 
 import Data.Fixed
 import Graphics.Gloss
 
 import Cloud
--- import Snow
+import Sky
 import Sun
-import Utils
+-- import Utils
 
 
-data Element = SunElement Sun
-             | CloudElement Cloud
+data Element = CloudElement Cloud
+             | SkyElement Sky
+             | SunElement Sun
 
 
 render :: Float -> Element -> Picture
 render t (CloudElement c) = cloud c{cloudTime=t}
+render t (SkyElement s) = sky s--{skyTime=t}
 render t (SunElement s) = sun s{sunTime=t}
+
+
+
+cloudElem, skyElem, sunElem :: Element
+cloudElem = CloudElement stdCloud
+skyElem = SkyElement stdSky
+sunElem = SunElement stdSun
