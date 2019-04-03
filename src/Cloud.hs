@@ -22,15 +22,15 @@ data Cloud = Cloud {
 }
 
 cloud :: Cloud -> Picture
-cloud Cloud {cloudKind=k, cloudColorMain=c1, cloudCoords=(x,y), cloudRans=r,
+cloud Cloud {cloudKind=k, cloudColorMain=cl, cloudCoords=(x,y), cloudRans=r,
              cloudSize'=sz@(w,h), cloudSteps=st, cloudTime=t} =
-    uncurry translate c' . uncurry rectangleSolid $ sz
+    uncurry translate c' . color cl . uncurry rectangleSolid $ sz
   where
     c' = (x+w/2, y+h/2)
 
 stdCloud = Cloud {
   cloudKind = None,
-  cloudColorMain = black,
+  cloudColorMain = greyN 0.5,
   cloudCoords = (200,300),
   cloudRans = [],
   cloudSize' = (150,50),
